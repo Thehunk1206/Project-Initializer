@@ -1,0 +1,24 @@
+#!/bin/sh
+# use 'chmod u+x createproject' to make command executable
+function createproject() {
+    read -p "Enter Your Github Username: "  $usernameGithub
+    read -s -p "Enter Your Github Password: " $usernamePassword
+    if [ -z $githubProjectName]
+    then
+        read -p "Enter project name: " $githubProjectName
+    fi
+    echo "Creating" $githubProjectName"..."
+    python3 'createproject.py' $githubProjectName $usernameGithub $usernamePassword
+    echo "Creating $githibProjectName folder in /home/projects"
+    mkdir ~/Projects/$githubProjectName
+    cd ~/Projects/$githubProjectName
+    git init
+    git remote add origin https://github.com/$usernameGithub/$githubProjectName.git
+    touch README.md
+    git add .
+    git commit -m "first commit"
+    git push -u origin master
+    exec bash
+}
+
+createproject $githubProjectName
