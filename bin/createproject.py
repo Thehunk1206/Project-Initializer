@@ -65,7 +65,9 @@ def makeLocal(usernameGithub, passwordGithub):
 
     # ISSUES
     subprocess.run(['cd {0}'.format(projectPath), 'git init', 'git remote add origin https://github.com/{0}/{1}'.format(usernameGithub, folderName), 'touch README.md',
-                    'git add .', 'git commit -m \'first commit\'', 'git push -u origin master', ], input=('\n\n\n\n\n\n{0}\n{1}'.format(usernameGithub, passwordGithub)), stdout=subprocess.PIPE, shell=True, text=True)
+                    'git add .', 'git commit -m \'first commit\''], stdout=subprocess.PIPE, shell=True)
+    subprocess.run(['cd {0} && git push -u origin master'.format(projectPath)], input='{0}\n{1}'.format(
+        usernameGithub, passwordGithub), stdout=subprocess.PIPE, shell=True, text=True)
 
 
 if __name__ == "__main__":
