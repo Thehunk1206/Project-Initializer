@@ -1,5 +1,7 @@
 # DONT RUN
 function createproject($githubProjectName) {
+    # TODO: Check for Python, Selenium, Webdriver, Git
+    # TODO: Stop process and prompt Installation and Instructions
     $usernameGithub = Read-Host "Enter Your Github Username: "
     Write-Host
     $usernamePassword = Read-Host "Enter Your Github Password: " -AsSecureString
