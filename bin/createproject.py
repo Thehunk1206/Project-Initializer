@@ -7,13 +7,6 @@ from sys import argv, platform
 
 
 def WebdriverDo():
-    # Asking User to enter the description of project which has to be in Github project description
-    Description = str(input("Enter the description of project: "))
-
-    # Getting Github username and password
-    usernameGithub = str(input("Enter Your Github Username: "))
-    passwordGithub = getpass(prompt="Enter Your Github Password: ")
-
     # Give your chromedriver's executable path as an argument to parameter "executable_path"
     ## EXAMPLE: browser = webdriver.Chrome(executable_path='/usr/lib/chromedriver_linux64/chromedriver')
     browser = webdriver.Chrome(
@@ -62,15 +55,26 @@ def makeLocal(usernameGithub, passwordGithub):
         print("Project with name ", projectPath,
               " already exists.\nFailed to initiate repo locally.")
         raise SystemExit
-    commitMessage = str(input("Enter initial commit message: "))
-    subprocess.run(['cd {0}; git init; git remote add origin https://github.com/{1}/{2}; touch README.md; git add .; git commit -m {3}; git push -u origin master;'.format(projectPath, usernameGithub, folderName, commitMessage)
-                    ], input='{0}\n{1}'.format(usernameGithub, passwordGithub), stdout=subprocess.PIPE, shell=True, text=True)
+    # ISSUE: Doesn't take inputs
+    doGitProcess1 = subprocess.run(['cd {0}; git init; git remote add origin https://github.com/{1}/{2}; touch README.md; git add .; git commit -m "{3}"; git push -u origin master;'.format(projectPath, usernameGithub, folderName, commitMessage)
+                                    ], input='{0}\n{1}'.format(usernameGithub, passwordGithub), stdout=subprocess.PIPE, shell=True, encoding='ascii')  # , text=True)
+    print(doGitProcess1.returncode)
+    print(doGitProcess1.stdout)
     print("Project creation successful")
+
 
 if __name__ == "__main__":
     # python interpreter is running this file as the main program, thus _name_=="__main__"
     folderName = str(argv[1])
-    # This sets path for project folder
+
+    # Getting Github username and password
+    usernameGithub = str(input("Enter Your Github Username: "))
+    passwordGithub = getpass(prompt="Enter Your Github Password: ")
+
+    # Asking User to enter the description of project which has to be in Github project description
+    Description = str(input("Enter the description of the project: "))
+    commitMessage = str(input("Enter initial commit message: "))
+
     if folderName == None:
         print("Usage: createproject <project-name>")
         raise SystemExit
