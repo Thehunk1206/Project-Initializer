@@ -5,7 +5,6 @@ This is Script to Automate your first time Project set up. This Bash script exec
 ## Development Status
 
 * Still under development
-* In an unstable condition, use at your own risk
 
 ## Instructions
 
