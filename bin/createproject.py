@@ -62,13 +62,10 @@ def makeLocal(usernameGithub, passwordGithub):
         print("Project with name ", projectPath,
               " already exists.\nFailed to initiate repo locally.")
         raise SystemExit
-
-    # ISSUES
-    subprocess.run(['cd {0}'.format(projectPath), 'git init', 'git remote add origin https://github.com/{0}/{1}'.format(usernameGithub, folderName), 'touch README.md',
-                    'git add .', 'git commit -m \'first commit\''], stdout=subprocess.PIPE, shell=True)
-    subprocess.run(['cd {0} && git push -u origin master'.format(projectPath)], input='{0}\n{1}'.format(
-        usernameGithub, passwordGithub), stdout=subprocess.PIPE, shell=True, text=True)
-
+    commitMessage = str(input("Enter initial commit message: "))
+    subprocess.run(['cd {0}; git init; git remote add origin https://github.com/{1}/{2}; touch README.md; git add .; git commit -m {3}; git push -u origin master;'.format(projectPath, usernameGithub, folderName, commitMessage)
+                    ], input='{0}\n{1}'.format(usernameGithub, passwordGithub), stdout=subprocess.PIPE, shell=True, text=True)
+    print("Project creation successful")
 
 if __name__ == "__main__":
     # python interpreter is running this file as the main program, thus _name_=="__main__"
