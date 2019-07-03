@@ -4,22 +4,7 @@ import subprocess
 import time
 import urllib
 from getpass import getpass
-from sys import argv, platform
-
-
-def createDirectory():
-    global projectPath
-    # option to manually set path
-
-    # This sets path for project folder
-    # Application will save projects to ~/project-initializer/projects by default
-    projectPath = os.path.join(os.path.expanduser(
-        "~"), 'project-initializer', 'projects')
-    if not os.path.exists(projectPath):
-        print("Making directory at", projectPath)
-        os.makedirs(projectPath, exist_ok=True)
-    else:
-        print("Directory ", projectPath,  " already exists")
+from sys import argv, platform, exit
 
 
 def WebdriverDo():
@@ -66,16 +51,20 @@ def WebdriverDo():
 
 
 def makeLocal(usernameGithub):
-    global projectPath
-    if folderName == None:
-        print("Usage: createproject <project-name>")
+    # option to manually set path
+
+    # Application will save projects to ~/project-initializer/projects by default
+    projectPath = os.path.join(os.path.expanduser(
+        "~"), 'project-initializer', 'projects', folderName)
+    if not os.path.exists(projectPath):
+        print("Making directory at", projectPath)
+        os.makedirs(projectPath, exist_ok=True)
     else:
-        print(folderName)
-        projectSaveDirectory = os.path.join(projectPath, folderName)
-        os.makedirs(projectSaveDirectory)
-        print("Project will be saved at ", projectSaveDirectory)
-        print("Making", folderName, " locally available")
-    gitCommands = ("git init",
+        print("Project with name ", projectPath,
+              " already exists.\nFailed to initiate repo locally.")
+        exit
+
+    gitCommands = ("cd "+projectPath, "git init",
                    "git remote add origin https://github.com/"+usernameGithub+"/"+folderName,
                    "touch README.md",
                    "git add .",
@@ -89,6 +78,9 @@ def makeLocal(usernameGithub):
 
 if __name__ == "__main__":
     # python interpreter is running this file as the main program, thus _name_=="__main__"
-    projectPath, folderName = "", str(argv[1])
-    createDirectory()
+    folderName = str(argv[1])
+    # This sets path for project folder
+    if folderName == None:
+        print("Usage: createproject <project-name>")
+        exit
     WebdriverDo()
