@@ -2,9 +2,8 @@ import os
 from selenium import webdriver
 import subprocess
 import time
-import urllib
 from getpass import getpass
-from sys import argv, platform, exit
+from sys import argv, platform
 
 
 def WebdriverDo():
@@ -47,10 +46,10 @@ def WebdriverDo():
 
     time.sleep(3)
     browser.close()
-    makeLocal(usernameGithub)
+    makeLocal(usernameGithub, passwordGithub)
 
 
-def makeLocal(usernameGithub):
+def makeLocal(usernameGithub, passwordGithub):
     # option to manually set path
 
     # Application will save projects to ~/project-initializer/projects by default
@@ -62,18 +61,11 @@ def makeLocal(usernameGithub):
     else:
         print("Project with name ", projectPath,
               " already exists.\nFailed to initiate repo locally.")
-        exit
+        raise SystemExit
 
-    gitCommands = ("cd "+projectPath, "git init",
-                   "git remote add origin https://github.com/"+usernameGithub+"/"+folderName,
-                   "touch README.md",
-                   "git add .",
-                   "git commit -m 'first commit'",
-                   "git push -u origin master",
-                   "exec bash")
-    for i in range(7):
-        os.system(gitCommands[i])
-    pass
+    # ISSUES
+    subprocess.run(['cd {0}'.format(projectPath), 'git init', 'git remote add origin https://github.com/{0}/{1}'.format(usernameGithub, folderName), 'touch README.md',
+                    'git add .', 'git commit -m \'first commit\'', 'git push -u origin master', ], input='{0}\n{1}'.format(usernameGithub, passwordGithub), stdout=subprocess.PIPE, shell=True)
 
 
 if __name__ == "__main__":
@@ -82,5 +74,5 @@ if __name__ == "__main__":
     # This sets path for project folder
     if folderName == None:
         print("Usage: createproject <project-name>")
-        exit
+        raise SystemExit
     WebdriverDo()
