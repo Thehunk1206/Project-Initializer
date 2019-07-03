@@ -5,7 +5,7 @@ This is Script to Automate your first time Project set up. This Bash script exec
 ## Development Status
 
 * Still under development
-* In very unstable condition, use at your own risk
+* In an unstable condition, use at your own risk
 
 ## Instructions
 
@@ -20,3 +20,17 @@ This is Script to Automate your first time Project set up. This Bash script exec
 * You can still run this perfectly fine without following the last step:
   * With the current directory as pwd, type this in terminal: `chmod u+x bin/createproject` to make it executable.
   * Now, enter `./createproject <project-name>` in terminal to create a project using Project-Initializer.
+
+### __Note:__
+
+If you did not put the scripts directory in your PATH, and . (the current directory) is not in the PATH either, you can activate the script like this:
+
+./createproject.sh \<projectname>
+
+A script can also explicitly be executed by a given shell, but generally we only do this if we want to obtain special behavior, such as checking if the script works with another shell or printing traces for debugging:
+
+zsh createproject.sh \<projectname>
+
+sh createproject.sh \<projectname>
+
+bash -x createproject.sh \<projectname>

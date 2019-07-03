@@ -3,19 +3,21 @@ from selenium import webdriver
 import subprocess
 import time
 import urllib
+from getpass import getpass
 from sys import argv, platform
+
 
 def createDirectory():
     global projectPath
-    if len(argv) != 4:
-        print("Didn\'t get expected inputs from sysarg")
-        return
+    # option to manually set path
+
     # This sets path for project folder
     # Application will save projects to ~/project-initializer/projects by default
     projectPath = os.path.join(os.path.expanduser(
         "~"), 'project-initializer', 'projects')
     if not os.path.exists(projectPath):
-        os.mkdir(projectPath)
+        print("Making directory at", projectPath)
+        os.makedirs(projectPath, exist_ok=True)
     else:
         print("Directory ", projectPath,  " already exists")
 
@@ -23,6 +25,10 @@ def createDirectory():
 def WebdriverDo():
     # Asking User to enter the description of project which has to be in Github project description
     Description = str(input("Enter the description of project: "))
+
+    # Getting Github username and password
+    usernameGithub = str(input("Enter Your Github Username: "))
+    passwordGithub = getpass(prompt="Enter Your Github Password: ")
 
     # Give your chromedriver's executable path as an argument to parameter "executable_path"
     ## EXAMPLE: browser = webdriver.Chrome(executable_path='/usr/lib/chromedriver_linux64/chromedriver')
@@ -33,16 +39,16 @@ def WebdriverDo():
 
     username = browser.find_element_by_name('login')
     # GithubUsername from sysarg are passed here
-    username.send_keys(str(argv[2]))
+    username.send_keys(usernameGithub)
 
     password = browser.find_element_by_name('password')
     # GithubPassword from sysarg are passed here
-    password.send_keys(str(argv[3]))
+    password.send_keys(passwordGithub)
 
     loginbutton = browser.find_element_by_name('commit')
     loginbutton.click()
 
-    print(str(argv[3]), " logged in successfully!")
+    print(usernameGithub, " logged in successfully!")
 
     browser.get("https://github.com/new")
     reponame = browser.find_element_by_name("repository[name]")
@@ -56,12 +62,12 @@ def WebdriverDo():
 
     time.sleep(3)
     browser.close()
-    makeLocal()
+    makeLocal(usernameGithub)
 
 
-def makeLocal():
+def makeLocal(usernameGithub):
     global projectPath
-    if argv[1] == None:
+    if folderName == None:
         print("Usage: createproject <project-name>")
     else:
         print(folderName)
@@ -70,7 +76,7 @@ def makeLocal():
         print("Project will be saved at ", projectSaveDirectory)
         print("Making", folderName, " locally available")
     gitCommands = ("git init",
-                   "git remote add origin https://github.com/"+str(argv[2])+"/"+folderName,
+                   "git remote add origin https://github.com/"+usernameGithub+"/"+folderName,
                    "touch README.md",
                    "git add .",
                    "git commit -m 'first commit'",
