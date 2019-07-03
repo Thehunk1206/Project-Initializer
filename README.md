@@ -14,6 +14,8 @@ This is Bash Script to Automate your first time Project set up. This Bash script
 * You should have installed a Selenium supported WebDriver for your favorite web browser. we used chrome's webdriver for this purpose
   * Download link for Chrome web driver: [Chrome Web Driver](http://chromedriver.chromium.org/downloads)
   * Download link for Firefox web driver: [Firefox Gecko Driver](https://github.com/mozilla/geckodriver/releases/)
+  * WARNING: Do add your webdriver executable to environment path
+  * WARNING: If you're using gecko, then make required changes in the python file.
 * It'd be better if you placed files under "bin" in "/bin" of your linux machine.
 * You can still run this perfectly fine without following the last step:
   * With the current directory as pwd, type this in terminal: `chmod u+x bin/createproject` to make it executable.
